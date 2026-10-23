@@ -1,0 +1,20 @@
+{
+  "name": "DXF Viewer",
+  "short_name": "DXF Viewer",
+  "description": "Read-only DXF viewer with exact measurement tools. Runs offline in the browser.",
+  "id": "./dxf-viewer.html",
+  "start_url": "./dxf-viewer.html",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#eceef1",
+  "theme_color": "#ffffff",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "icons/maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ],
+  "file_handlers": [
+    { "action": "./dxf-viewer.html", "accept": { "image/vnd.dxf": [".dxf"], "application/dxf": [".dxf"] } }
+  ]
+}

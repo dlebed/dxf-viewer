@@ -5,6 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>DXF Viewer</title>
 <meta name="description" content="Read-only DXF viewer with exact measurement tools. Runs offline in the browser.">
+<meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#1c2026" media="(prefers-color-scheme: dark)">
+<script>
+  // Installable app (PWA) when served over http(s). Opened from file:// it stays a plain page.
+  if (/^https?:$/.test(location.protocol)) {
+    document.head.insertAdjacentHTML('beforeend', '<link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="icons/icon.svg"><link rel="apple-touch-icon" href="icons/icon-192.png">');
+    if ('serviceWorker' in navigator) addEventListener('load', () => navigator.serviceWorker.register('sw.js').catch(() => {}));
+  }
+</script>
 <style>
   :root {
     color-scheme: light dark;
@@ -4226,6 +4235,14 @@ setTool('inspect');
 resize();
 const qs = new URLSearchParams(location.search).get('file');
 if (qs) loadUrl(qs);
+// installed app: a .dxf opened from the OS (manifest file_handlers)
+if ('launchQueue' in window) {
+  launchQueue.setConsumer(async ({ files }) => {
+    if (!files || !files.length) return;
+    const f = await files[0].getFile();
+    await loadBytes(await f.arrayBuffer(), f.name);
+  });
+}
 
 // =====================================================================================================
 // Test / automation hook

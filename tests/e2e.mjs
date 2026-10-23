@@ -5,6 +5,7 @@
 //   cd tests && npm install && npm run e2e
 // Chrome path: $CHROME, else the default macOS / Linux locations.
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import puppeteer from 'puppeteer-core';
@@ -275,6 +276,35 @@ await page.screenshot({ path: path.join(outDir, 'phone.png') });
 
 check(external.length === 0, `no network requests${external.length ? ': ' + external.join(', ') : ''}`);
 check(errors.length === 0, `no console errors${errors.length ? ': ' + errors.join(' | ') : ''}`);
+
+// ------------------------------------------------------------ served over http: installable app (PWA), works offline
+const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.webmanifest': 'application/manifest+json', '.svg': 'image/svg+xml', '.png': 'image/png' };
+const root = path.join(here, '..');
+const server = http.createServer((req, res) => {
+  const file = path.join(root, decodeURIComponent(new URL(req.url, 'http://x').pathname));
+  if (!file.startsWith(root + path.sep) || !fs.existsSync(file) || !fs.statSync(file).isFile()) { res.writeHead(404).end(); return; }
+  res.writeHead(200, { 'Content-Type': MIME[path.extname(file)] || 'application/octet-stream' }).end(fs.readFileSync(file));
+});
+await new Promise((r) => server.listen(0, '127.0.0.1', r));
+const app = await browser.newPage();
+const appErrors = [];
+app.on('pageerror', (e) => appErrors.push(String(e)));
+await app.goto(`http://127.0.0.1:${server.address().port}/dxf-viewer.html`);
+const swReady = await app.evaluate(() => Promise.race([navigator.serviceWorker.ready.then(() => true), new Promise((r) => setTimeout(r, 5000, false))]));
+check(swReady, 'service worker registered');
+const cdp = await app.createCDPSession();
+const { installabilityErrors } = await cdp.send('Page.getInstallabilityErrors');
+check(installabilityErrors.length === 0, `installable as an app${installabilityErrors.length ? ': ' + installabilityErrors.map((e) => e.errorId).join(', ') : ''}`);
+const { errors: manifestErrors } = await cdp.send('Page.getAppManifest');
+check(manifestErrors.length === 0, `manifest parses${manifestErrors.length ? ': ' + manifestErrors.map((e) => e.message).join(' | ') : ''}`);
+await app.reload();
+await app.setOfflineMode(true);
+await app.reload();
+const offline = await app.evaluate(async () => { await new Promise((r) => setTimeout(r, 300)); return !!window.dxfViewer; });
+check(offline, 'starts offline from the service worker cache');
+check(appErrors.length === 0, `no page errors over http${appErrors.length ? ': ' + appErrors.join(' | ') : ''}`);
+server.close();
+
 await browser.close();
 console.log(failures ? `\n${failures} check(s) failed` : '\nall E2E checks passed');
 process.exit(failures ? 1 : 0);
