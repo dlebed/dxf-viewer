@@ -76,7 +76,7 @@ test('real-world files load, and entity counts agree with dxf-parser', () => {
   const dir = new URL('real/', FIX);
   const shared = new Set(['LINE', 'CIRCLE', 'ARC', 'LWPOLYLINE', 'POLYLINE', 'TEXT', 'MTEXT', 'INSERT', 'SPLINE', 'ELLIPSE', 'POINT', 'SOLID', '3DFACE', 'DIMENSION', 'ATTDEF']);
   let compared = 0;
-  for (const f of fs.readdirSync(dir)) {
+  for (const f of fs.readdirSync(dir).filter((n) => n.endsWith('.dxf'))) {
     const bytes = new Uint8Array(fs.readFileSync(new URL(f, dir)));
     const doc = C.loadDxf(bytes);
     assert.ok(doc.spaces[0].entities.length > 0, `${f}: no entities`);

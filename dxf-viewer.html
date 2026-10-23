@@ -118,11 +118,12 @@
   table.grid tr.click { cursor: pointer; }
   table.grid tr.click:hover td { background: var(--panel-2); }
   .note { color: var(--muted); padding: 0 12px 6px; font-size: 12px; }
+  #drawing-info { padding-top: 10px; }
   .warn { color: var(--danger); }
 
   /* info + measurement list */
-  .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; padding: 0 12px; }
-  .kv dt { color: var(--muted); }
+  .kv { display: grid; grid-template-columns: auto 1fr; gap: 3px 10px; margin: 0 0 8px; padding: 0 12px; }
+  .kv dt { color: var(--muted); white-space: nowrap; }
   .kv dd { margin: 0; font-family: var(--mono); font-size: 12px; text-align: right; overflow-wrap: anywhere; }
   .kv .title { grid-column: 1 / -1; font-weight: 600; margin-bottom: 2px; }
   .kv .sub { grid-column: 1 / -1; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .5px; margin-top: 6px; }
@@ -3189,6 +3190,7 @@ const TOOLS = {
 function setTool(t) {
   if (!TOOLS[t]) return;
   state.tool = t; state.pending = null;
+  hideToast();
   for (const b of document.querySelectorAll('#tools .btn')) b.setAttribute('aria-pressed', String(b.dataset.tool === t));
   $('#hint').textContent = state.doc ? TOOLS[t] : 'Open a DXF file to start.';
   vp.classList.toggle('cross', t !== 'inspect');
@@ -3423,9 +3425,9 @@ function describe(m) {
 // =====================================================================================================
 // Overlay: measurements, previews, snap glyphs, zoom window
 // =====================================================================================================
-let labelQueue = null;
+let labelQueue = null, labelBoxes = [];
 function drawOverlay(g) {
-  state.labelRects = [];
+  state.labelRects = []; labelBoxes = [];
   labelQueue = []; // labels are drawn after all measurement geometry so lines never cross them
   const sp = (p) => screenOf(p[0], p[1]);
   for (const m of state.measurements) if (m.si === state.si) drawMeasurement(g, m, m.id === state.selMeasure, false);
@@ -3496,13 +3498,20 @@ function drawLabel(g, text, x, y, id, selected, preview) {
   if (labelQueue) { labelQueue.push([text, x, y, id, selected, preview]); return; }
   g.font = '600 12px ui-monospace, Menlo, monospace';
   const w = g.measureText(text).width + 12, h = 20;
-  const bx = x - w / 2, by = y - h / 2;
+  let bx = x - w / 2, by = y - h / 2;
+  if (x >= 0 && x <= state.W && y >= 0 && y <= state.H) { // keep on-screen labels inside the viewport
+    bx = Math.min(Math.max(bx, 4), state.W - w - 4);
+    by = Math.min(Math.max(by, 4), state.H - h - 4);
+  }
+  const hits = (r) => bx < r.x + r.w + 2 && r.x < bx + w + 2 && by < r.y + r.h + 2 && r.y < by + h + 2;
+  for (let k = 0; k < 8 && labelBoxes.some(hits); k++) by += h + 4; // step past labels already drawn
+  labelBoxes.push({ x: bx, y: by, w, h });
   g.globalAlpha = preview ? 0.85 : 1;
   g.fillStyle = theme.measure;
   g.beginPath(); g.roundRect(bx, by, w, h, 4); g.fill();
   if (selected) { g.strokeStyle = theme.text; g.lineWidth = 2; g.stroke(); }
   g.fillStyle = '#fff'; g.textBaseline = 'middle';
-  g.fillText(text, bx + 6, y + 0.5);
+  g.fillText(text, bx + 6, by + h / 2 + 0.5);
   g.textBaseline = 'alphabetic'; g.globalAlpha = 1;
   if (id != null) state.labelRects.push({ id, x: bx, y: by, w, h });
 }
@@ -3788,9 +3797,9 @@ function renderInfo() {
   const ents = {};
   for (const e of S.entities) if (!e.dim || e.type === 'DIMENSION') ents[e.type] = (ents[e.type] || 0) + 1;
   let html = kv([
-    ['File', state.fileName], ['Version', `${doc.version}${doc.release ? ` (AutoCAD ${doc.release})` : ''}${doc.binary ? ', binary' : ''}`],
-    ['Units', `${du.name}${du.assumed ? ' (assumed — file is unitless)' : ''}`], ['Encoding', doc.encoding],
-    ['Extents W × H', `${fmtLen(b[2] - b[0])} × ${fmtLen(b[3] - b[1])}`], ['Min', fmtPt([b[0], b[1]])], ['Max', fmtPt([b[2], b[3]])],
+    ['File', state.fileName], ['Version', `${doc.version}${doc.release ? ` (${doc.release})` : ''}${doc.binary ? ', binary' : ''}`],
+    ['Units', `${du.name}${du.assumed ? ' (assumed)' : ''}`], ['Encoding', doc.encoding],
+    ['Width', fmtLen(b[2] - b[0])], ['Height', fmtLen(b[3] - b[1])], ['Min', fmtPt([b[0], b[1]])], ['Max', fmtPt([b[2], b[3]])],
   ], S.name);
   html += '<h2>Contours</h2>' + kv([['Closed', String(A.closed)], ['Open', String(A.open)], ['Open ends', String(A.ends.length)], ['Join tolerance', `${+A.tol.toPrecision(2)} ${du.name}`]]);
   html += `<p class="note"><label><input type="checkbox" id="show-ends" ${state.showEnds ? 'checked' : ''}> Mark open ends in the drawing</label></p>`;
@@ -3876,8 +3885,9 @@ function toast(msg, isError) {
   const t = $('#toast');
   t.textContent = msg; t.className = isError ? '' : 'info'; t.style.display = 'block';
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.style.display = 'none'; }, isError ? 4500 : 2200);
+  toastTimer = setTimeout(hideToast, isError ? 4500 : 2200);
 }
+function hideToast() { clearTimeout(toastTimer); $('#toast').style.display = 'none'; }
 
 async function loadBytes(buf, name) {
   busy(true, `Reading ${name}…`);

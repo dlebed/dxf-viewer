@@ -44,7 +44,7 @@ Every result is computed from the **true geometry in the file**: lines, circular
 
 ## Info panel (for CNC, laser and PCB work)
 
-- Extents W × H (stock size), version, units and encoding.
+- Extents: width and height (stock size), min and max; version, units and encoding.
 - **Contours:** the number of closed and open contours and open ends. It can mark the open ends in the drawing and lists the smallest gaps between ends; click a gap to zoom to it.
 - **Hole table:** full circles grouped by diameter, with counts. Click a row to highlight those holes.
 - **Length by layer:** total geometry length per layer, i.e. cut or trace length.
