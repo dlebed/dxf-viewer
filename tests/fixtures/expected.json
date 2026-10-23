@@ -1,0 +1,349 @@
+{
+ "plate.dxf": {
+  "insunits": 4,
+  "counts": {
+   "LWPOLYLINE": 2,
+   "CIRCLE": 4,
+   "LINE": 8,
+   "DIMENSION": 2,
+   "TEXT": 1,
+   "MTEXT": 1
+  },
+  "layerLength": {
+   "OUTLINE": 297.85398163346986,
+   "HOLES": 81.68140890935929,
+   "CENTER": 80.0,
+   "SLOT": 65.1327412222587,
+   "DIMS": 122.68388594811165
+  },
+  "extents": [
+   -0.08750000000000001,
+   -10.375,
+   100.0875,
+   50.0
+  ],
+  "values": {
+   "outlineArea": 4994.634954084936,
+   "outlinePerimeter": 297.85398163397446,
+   "holeRadius": 3.25,
+   "holeArea": 33.18307240354219,
+   "holeCount": 4,
+   "slotArea": 210.2654824574367,
+   "slotPerimeter": 65.13274122871834,
+   "netArea": 4651.637182013331,
+   "holes": [
+    [
+     10,
+     10
+    ],
+    [
+     90,
+     10
+    ],
+    [
+     10,
+     40
+    ],
+    [
+     80,
+     40
+    ]
+   ],
+   "holeGap": 73.5,
+   "dimValue": 100
+  }
+ },
+ "plate-bin.dxf": {
+  "insunits": 4,
+  "counts": {
+   "LWPOLYLINE": 2,
+   "CIRCLE": 4,
+   "LINE": 8,
+   "DIMENSION": 2,
+   "TEXT": 1,
+   "MTEXT": 1
+  },
+  "layerLength": {
+   "OUTLINE": 297.85398163346986,
+   "HOLES": 81.68140890935929,
+   "CENTER": 80.0,
+   "SLOT": 65.1327412222587,
+   "DIMS": 122.68388594811165
+  },
+  "extents": [
+   -0.08750000000000001,
+   -10.375,
+   100.0875,
+   50.0
+  ],
+  "values": {
+   "outlineArea": 4994.634954084936,
+   "outlinePerimeter": 297.85398163397446,
+   "holeRadius": 3.25,
+   "holeArea": 33.18307240354219,
+   "holeCount": 4,
+   "slotArea": 210.2654824574367,
+   "slotPerimeter": 65.13274122871834,
+   "netArea": 4651.637182013331,
+   "holes": [
+    [
+     10,
+     10
+    ],
+    [
+     90,
+     10
+    ],
+    [
+     10,
+     40
+    ],
+    [
+     80,
+     40
+    ]
+   ],
+   "holeGap": 73.5,
+   "dimValue": 100
+  },
+  "binary": true
+ },
+ "transforms.dxf": {
+  "insunits": 4,
+  "counts": {
+   "INSERT": 5,
+   "ARC": 1,
+   "CIRCLE": 1,
+   "LWPOLYLINE": 1
+  },
+  "layerLength": {
+   "I1": 121.84148045777573,
+   "I2": 60.920740228887865,
+   "I3": 101.38079476587008,
+   "I4": 137.07166551499768,
+   "I5": 365.5244413733271,
+   "NEG": 39.39354858367764
+  },
+  "extents": [
+   -27.614853865045976,
+   -30.0,
+   120.0,
+   84.67771668467364
+  ],
+  "values": {
+   "ellipseCenter": [
+    98,
+    5
+   ],
+   "ellipseAxes": [
+    4,
+    2
+   ],
+   "negArcCenter": [
+    10,
+    5
+   ],
+   "negArcRadius": 4,
+   "negArcStart": [
+    6,
+    5
+   ],
+   "negArcEnd": [
+    12.0,
+    8.464101615137755
+   ],
+   "negCircleCenter": [
+    30,
+    5
+   ]
+  }
+ },
+ "curves.dxf": {
+  "insunits": 4,
+  "counts": {
+   "SPLINE": 4,
+   "ELLIPSE": 3
+  },
+  "layerLength": {
+   "SPL_OPEN": 68.92392653055026,
+   "SPL_RAT": 15.707963266933001,
+   "SPL_CLOSED": 81.39524009490292,
+   "SPL_FIT": 74.59127482607738,
+   "ELL_FULL": 58.13068926352283,
+   "ELL_ARC": 18.46341540479808,
+   "ELL_NEG": 9.688448219925142
+  },
+  "extents": [
+   -5.692931039597075e-16,
+   -32.00237103413779,
+   108.0,
+   67.93725392498784
+  ],
+  "values": {
+   "ratQuarterLength": 15.707963267948966,
+   "ellipseFullArea": 226.1946710584651,
+   "ellNegStart": [
+    108,
+    60
+   ],
+   "ellNegEnd": [
+    100,
+    56
+   ]
+  }
+ },
+ "hatches.dxf": {
+  "insunits": 4,
+  "counts": {
+   "HATCH": 3,
+   "LWPOLYLINE": 1
+  },
+  "layerLength": {
+   "BOUNDARY": 160.0
+  },
+  "extents": [
+   0.0,
+   0.0,
+   40.0,
+   40.0
+  ],
+  "values": {
+   "solidArea": 1285.7527975877067,
+   "patternArea": 1600.0,
+   "edgeArea": 757.1236012061433,
+   "solidAreaExact": 1285.8407346410206
+  }
+ },
+ "pcb.dxf": {
+  "insunits": 0,
+  "counts": {
+   "LINE": 8,
+   "ARC": 4,
+   "CIRCLE": 22,
+   "POLYLINE": 2
+  },
+  "layerLength": {
+   "Edge.Cuts": 194.8495559203276,
+   "Drill": 81.68140890935923,
+   "F.Cu": 62.242640687119284,
+   "Gap": 39.95
+  },
+  "extents": [
+   0.0,
+   0.0,
+   80.0,
+   40.0
+  ],
+  "values": {
+   "boardArea": 2392.274333882308,
+   "boardPerimeter": 194.84955592153875,
+   "holeTable": {
+    "3.2": 4,
+    "0.6": 12,
+    "1": 6
+   },
+   "gap": 0.05,
+   "gapEnds": [
+    [
+     70,
+     0
+    ],
+    [
+     70,
+     0.05
+    ]
+   ],
+   "traceLength": 32.242640687119284
+  }
+ },
+ "inch.dxf": {
+  "insunits": 1,
+  "counts": {
+   "LWPOLYLINE": 1,
+   "CIRCLE": 1
+  },
+  "layerLength": {
+   "0": 6.785398162589993
+  },
+  "extents": [
+   0.0,
+   0.0,
+   2.0,
+   1.0
+  ],
+  "values": {
+   "width": 2,
+   "radius": 0.125
+  }
+ },
+ "unitless.dxf": {
+  "insunits": 0,
+  "counts": {
+   "LINE": 1
+  },
+  "layerLength": {
+   "0": 10.0
+  },
+  "extents": [
+   0.0,
+   0.0,
+   10.0,
+   0.0
+  ],
+  "values": {
+   "length": 10
+  }
+ },
+ "text.dxf": {
+  "insunits": 4,
+  "counts": {
+   "LINE": 1,
+   "TEXT": 6,
+   "MTEXT": 1,
+   "INSERT": 1
+  },
+  "layerLength": {
+   "0": 131.41592650359974
+  },
+  "extents": [
+   0.0,
+   0.0,
+   100.0,
+   45.0
+  ],
+  "values": {
+   "attrib": "P-17"
+  }
+ },
+ "cp1251.dxf": {
+  "insunits": 4,
+  "counts": {
+   "TEXT": 1
+  },
+  "layerLength": {},
+  "extents": null,
+  "values": {
+   "text": "Привет, мир"
+  }
+ },
+ "paper.dxf": {
+  "insunits": 4,
+  "counts": {
+   "LWPOLYLINE": 1,
+   "CIRCLE": 1
+  },
+  "layerLength": {
+   "0": 362.83185300719947
+  },
+  "extents": [
+   0.0,
+   0.0,
+   100.0,
+   50.0
+  ],
+  "values": {
+   "layout": "Sheet1",
+   "viewportScale": 1.25
+  }
+ }
+}

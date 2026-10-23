@@ -1,0 +1,14 @@
+{
+  "name": "dxf-viewer-tests",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "e2e": "node e2e.mjs",
+    "fixtures": "uv run --no-project --with ezdxf==1.4.5 python make-fixtures.py"
+  },
+  "devDependencies": {
+    "dxf-parser": "1.1.2",
+    "puppeteer-core": "24.43.1"
+  }
+}
